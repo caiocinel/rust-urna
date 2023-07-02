@@ -7,20 +7,26 @@ fn main() {
     let mut candidate_2_votes: i32 = 0;
 
     loop{
-        let mut voted_candidate = String::new();
-        io::stdin().read_line(&mut voted_candidate).expect("Failed to read line");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Fail to get input");
+        let vote = input.trim();
 
-        if voted_candidate.trim() == "1"{
+        if vote != "1" && vote != "2"{
+            println!("Invalid Vote, try again!");
+            continue;
+        }
+
+        if vote == "1"{
             candidate_1_votes = candidate_1_votes + 1;
             println!("Voted in Candidate 1");
         }
               
-        if voted_candidate.trim() == "2"{
+        if vote == "2"{
             candidate_2_votes = candidate_2_votes + 1;
             println!("Voted in Candidate 2");
         }
 
-        if voted_candidate.trim() != ""{
+        if vote != ""{
             println!("Candidate 1: {}", candidate_1_votes);
             println!("Candidate 2: {}", candidate_2_votes);
         }
