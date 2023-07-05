@@ -26,8 +26,8 @@ struct Voters{
 }
 
 impl Voters {
-    fn get_by_key(&self, key: String) -> Option<&Voter>{
-        return self.items.iter().find(|f| f.key == key);
+    fn get_by_key(&mut self, key: &str) -> Option<&mut Voter> {
+        return self.items.iter_mut().find(|f| f.key == key);
     }
 
     fn has_voters_left(&self) -> bool{
@@ -37,7 +37,7 @@ impl Voters {
 }
 
 fn main() {    
-    let voters = Voters{
+    let mut voters = Voters{
         items: vec![
         Voter{
             key: String::from("111"),
@@ -105,22 +105,20 @@ fn main() {
             std::process::exit(0)
         }
           
-        let voter = &voters.get_by_key(String::from(key));
+        let voter = voters.get_by_key(key);
 
         if voter.is_none(){
             println!("Invalid Key");
             continue;
         }
 
-        println!("{}", voter.unwrap().has_voted());
-        voter.unwrap().set_voted();  // Stopped Here ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-        println!("{}", voters.get_by_key(String::from(key)).unwrap().has_voted());
-       
-        // if current_voter == 1 && voter_1_voted || current_voter == 2 && voter_2_voted || current_voter == 3 && voter_3_voted{
-        //     println!("Already voted!");
-        //     continue;
-        // }
-
+        
+        if voter.as_ref().unwrap().has_voted(){
+            println!("Already voted!");
+            continue;
+        }
+        
+        voter.map(|v| v.set_voted());
 
         // let mut vote_input = String::new();
         // println!("Insert Vote: ");
