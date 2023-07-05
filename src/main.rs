@@ -1,50 +1,8 @@
+mod structs;
+use structs::voters::{Voters, Voter};
+use structs::candidates::{Candidates, Candidate};
+
 const END_PASSWORD: &str = "stop";
-
-struct Voter{
-    key: String,
-    voted: bool    
-}
-
-impl Voter{
-    fn has_voted(&self) -> bool{
-        return self.voted
-    }
-
-    fn set_voted(&mut self){
-        self.voted = true;
-    }
-}
-
-struct Candidate{
-    name: String,
-    key: String,
-    vote_count: u16,    
-}
-
-struct Voters{
-    items: Vec<Voter>,
-}
-
-impl Voters {
-    fn get_by_key(&mut self, key: &str) -> Option<&mut Voter> {
-        return self.items.iter_mut().find(|f| f.key == key);
-    }
-
-    fn has_voters_left(&self) -> bool{
-        return self.items.iter().any(|i| i.voted == false);
-    }
-
-}
-
-struct Candidates {
-    items: Vec<Candidate>
-}
-
-impl Candidates {
-    fn get_by_key(&mut self, key: &str) -> Option<&mut Candidate> {
-        return self.items.iter_mut().find(|f| f.key == key);
-    }
-}
 
 fn main() {    
     let mut voters = Voters{
@@ -141,7 +99,7 @@ fn main() {
         }        
 
         voter.map(|v| v.set_voted());
-        
+
         vote.map(|v| {
             v.vote_count += 1
         });
