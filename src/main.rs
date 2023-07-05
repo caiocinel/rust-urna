@@ -36,6 +36,16 @@ impl Voters {
 
 }
 
+struct Candidates {
+    items: Vec<Candidate>
+}
+
+impl Candidates {
+    fn get_by_key(&mut self, key: &str) -> Option<&mut Candidate> {
+        return self.items.iter_mut().find(|f| f.key == key);
+    }
+}
+
 fn main() {    
     let mut voters = Voters{
         items: vec![
@@ -54,21 +64,22 @@ fn main() {
         ]
     };
 
-    let candidates: Vec<Candidate> = vec![
-        Candidate{
-            name: String::from("Candidate 1"),
-            key: String::from("1"),
-            vote_count: 0
-        },
-        Candidate{
-            name: String::from("Candidate 2"),
-            key: String::from("2"),
-            vote_count: 0
-        },
-    ];
+    let mut candidates =  Candidates{
+        items: vec![
+            Candidate{
+                name: String::from("Candidate 1"),
+                key: String::from("1"),
+                vote_count: 0
+            },
+            Candidate{
+                name: String::from("Candidate 2"),
+                key: String::from("2"),
+                vote_count: 0
+            },
+        ]
+    };
 
     println!("Starting...");
-    let mut current_voter: i8;
 
     loop{ 
 
@@ -83,7 +94,7 @@ fn main() {
             }
             
             println!("Results:");
-            for candidate in &candidates  {
+            for candidate in candidates.items  {
                 println!("{}: {}", candidate.name, candidate.vote_count);
             }
             println!("Vote Ended");            
@@ -98,7 +109,7 @@ fn main() {
 
         if key == END_PASSWORD{
             println!("Results:");
-            for candidate in &candidates {
+            for candidate in candidates.items {
                 println!("{}: {}", candidate.name, candidate.vote_count);
             }
             println!("Vote Ended");            
@@ -118,30 +129,23 @@ fn main() {
             continue;
         }
         
-        voter.map(|v| v.set_voted());
-
-        // let mut vote_input = String::new();
-        // println!("Insert Vote: ");
-        // std::io::stdin().read_line(&mut vote_input).expect("Fail to get vote input");
-        // let vote = vote_input.trim();
-
-        // if vote != "1" && vote != "2"{
-        //     println!("Invalid Vote, try again!");
-        //     continue;
-        // }
-
-        // if vote == "1"{
-        //     candidate_1_votes = candidate_1_votes + 1;
-        //     println!("Voted in Candidate 1");
-        // }
-              
-        // if vote == "2"{
-        //     candidate_2_votes = candidate_2_votes + 1;
-        //     println!("Voted in Candidate 2");
-        // }
         
-        // voter_1_voted = current_voter == 1 || voter_1_voted;
-        // voter_2_voted = current_voter == 2 || voter_2_voted;
-        // voter_3_voted = current_voter == 3 || voter_3_voted;
+        let mut vote_input = String::new();
+        println!("Insert Vote: ");
+        std::io::stdin().read_line(&mut vote_input).expect("Fail to get vote input");
+        let vote = candidates.get_by_key(vote_input.trim());
+        
+        if vote.is_none(){
+            println!("Invalid Vote, try again!");
+            continue;
+        }        
+
+        voter.map(|v| v.set_voted());
+        
+        vote.map(|v| {
+            v.vote_count += 1
+        });
+
+
     }
 }
