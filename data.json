@@ -1,0 +1,23 @@
+{
+    "candidates": [
+        {
+            "name": "Candidate 1",
+            "key": "1"
+        },
+        {
+            "name":"Candidate 2",
+            "key": "2"
+        }
+    ],
+    "votes": [
+        {
+            "key": "111"
+        },
+        {
+            "key": "222"
+        },
+        {
+            "key": "333"
+        }
+    ] 
+}
